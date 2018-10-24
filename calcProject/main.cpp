@@ -21,5 +21,14 @@ int main(int argc, char** argv){
     }
 
 
+void inToPost(stack <int> myStack, char* str){
+    int i = 0;
+    while(str[i] != '\0'){
+        //infix to prefix algo: https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
+    }
+}
+int calcPost(stack <int> myStack){
 
-
+    //dummy return
+    return 5;
+}
