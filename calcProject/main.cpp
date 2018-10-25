@@ -45,6 +45,7 @@ int main(int argc, char** argv)
                     cout<<"invalid input"<<endl;
                     exit(1);
                 }
+
                 char oper = operate.top();
                 operate.pop();
 
@@ -54,7 +55,7 @@ int main(int argc, char** argv)
                     exit(1);
                 }
                 double a = operand.top();
-                operand.top();
+                operand.pop();
 
                 if(operand.empty())
                 {
@@ -68,6 +69,7 @@ int main(int argc, char** argv)
                 operand.push(runOperate(b, a, oper));
 
             }
+
             operate.pop();
 
         }
@@ -88,15 +90,16 @@ int main(int argc, char** argv)
                 if(operand.empty())
                 {
                     cout<<"invalid input"<<endl;
-                    exit(2);
+                    exit(7);
                 }
+
                 double a = operand.top();
-                operand.top();
+                operand.pop();
 
                 if(operand.empty())
                 {
                     cout<<"invalid input"<<endl;
-                    exit(2);
+                    exit(8);
                 }
 
                 double b = operand.top();
@@ -130,7 +133,7 @@ int main(int argc, char** argv)
                     exit(3);
                 }
                 double a = operand.top();
-                operand.top();
+                operand.pop();
 
                 if(operand.empty())
                 {
@@ -157,17 +160,17 @@ int main(int argc, char** argv)
 
     }
 
-    if(!operand.empty()){
+    /*if(!operand.empty()){
 
         cout <<"invalid input" << endl;
         exit(5);
     }
 
-    else{
+    else{*/
 
-        cout << argv[0] << " = " << answer << endl;
+        cout << argv[1] << " = " << answer << endl;
 
-    }
+    //}
 
     return 0;
 }
@@ -207,18 +210,17 @@ int precedence(char operate)
     {
     case '+':
     case '-':
-        x = 0;
+        x = 1;
         break;
     case '*':
     case '/':
         x = 1;
         break;
     case '^':
-        x = 2;
+        x = 3;
         break;
     case '(':
-    case ')':
-        x = 3;
+           x = 0;
         break;
     default :
         x = -1;
