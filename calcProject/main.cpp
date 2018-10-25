@@ -9,7 +9,7 @@ using namespace std;
 
 double runOperate(double a, double b, char operate);
 int precedence(char operate);
-bool isOperand(char character);
+bool isOperator(char character);
 
 int main(int argc, char** argv)
 {
@@ -72,11 +72,102 @@ int main(int argc, char** argv)
 
         }
 
+        else if(isOperator(str[0])){
+            if(operate.empty()){
+                operate.push(str[0]);
+            }
+            else{
+
+            int pres = precedence(str[0]);
+
+            while(precedence(operate.top()) > pres) {
+
+                char oper = operate.top();
+                operate.pop();
+
+                if(operand.empty())
+                {
+                    cout<<"invalid input"<<endl;
+                    exit(2);
+                }
+                double a = operand.top();
+                operand.top();
+
+                if(operand.empty())
+                {
+                    cout<<"invalid input"<<endl;
+                    exit(2);
+                }
+
+                double b = operand.top();
+                operand.pop();
+
+                operand.push(runOperate(b, a, oper));
+
+                if(operate.empty()) break;
+            }
+
+            operate.push(str[0]);
+            }
+
+
+
+        }
+
 
 
     }
 
+    while(!operate.empty()){
 
+
+                char oper = operate.top();
+                operate.pop();
+
+                if(operand.empty())
+                {
+                    cout<<"invalid input"<<endl;
+                    exit(3);
+                }
+                double a = operand.top();
+                operand.top();
+
+                if(operand.empty())
+                {
+                    cout<<"invalid input"<<endl;
+                    exit(3);
+                }
+
+                double b = operand.top();
+                operand.pop();
+
+                operand.push(runOperate(b, a, oper));
+
+
+    }
+    double answer;
+    if(operand.empty()){
+
+        cout << "error" << endl;
+        exit(4);
+    }
+    else{
+        answer = operand.top();
+        operand.pop();
+
+    }
+
+    if(!operand.empty()){
+
+        cout <<"invalid input" << endl;
+        exit(5);
+    }
+
+    else{
+
+        cout << argv[0] << " = " << answer << endl;
+
+    }
 
     return 0;
 }
@@ -137,7 +228,7 @@ int precedence(char operate)
     return x;
 }
 
-bool isOperand(char character){
+bool isOperator(char character){
 switch(character)
     {
     case '+':
