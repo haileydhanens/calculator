@@ -1,3 +1,6 @@
+//Hailey dhanens
+
+#define _GLIBCXX_USE_CXX11_ABI 0
 #include <iostream>
 #include <stack>
 #include <sstream>
@@ -17,11 +20,22 @@ int main(int argc, char** argv)
     stack<char> operate;
     stack<double> operand;
     stringstream stream(argv[1]);
-
+    int num;
     string str;
     while(getline(stream, str, ' '))
     {
-        if(isdigit(str[0]))
+
+
+        try
+        {
+            double value = std::stod(str);
+            num = 1;
+        }
+        catch(std::exception& e)
+        {
+            num =  0;
+        }
+        if(num)
         {
             //if a number, push onto the operand stack
             operand.push(stod(str, NULL));
@@ -74,103 +88,106 @@ int main(int argc, char** argv)
 
         }
 
-        else if(isOperator(str[0])){
-            if(operate.empty()){
+        else if(isOperator(str[0]))
+        {
+            if(operate.empty())
+            {
+                operate.push(str[0]);
+            } //endif
+            else
+            {
+
+                int pres = precedence(str[0]);
+
+                while(precedence(operate.top()) > pres)
+                {
+
+                    char oper = operate.top();
+                    operate.pop();
+
+                    if(operand.empty())
+                    {
+                        cout<<"invalid input"<<endl;
+                        exit(7);
+                    }
+
+                    double a = operand.top();
+                    operand.pop();
+
+                    if(operand.empty())
+                    {
+                        cout<<"invalid input"<<endl;
+                        exit(8);
+                    }
+
+                    double b = operand.top();
+                    operand.pop();
+
+                    operand.push(runOperate(b, a, oper));
+
+                    if(operate.empty()) break;
+                }
+
                 operate.push(str[0]);
             }
-            else{
-
-            int pres = precedence(str[0]);
-
-            while(precedence(operate.top()) > pres) {
-
-                char oper = operate.top();
-                operate.pop();
-
-                if(operand.empty())
-                {
-                    cout<<"invalid input"<<endl;
-                    exit(7);
-                }
-
-                double a = operand.top();
-                operand.pop();
-
-                if(operand.empty())
-                {
-                    cout<<"invalid input"<<endl;
-                    exit(8);
-                }
-
-                double b = operand.top();
-                operand.pop();
-
-                operand.push(runOperate(b, a, oper));
-
-                if(operate.empty()) break;
-            }
-
-            operate.push(str[0]);
-            }
-
-
-
         }
-
-
-
     }
 
-    while(!operate.empty()){
+    while(!operate.empty())
+    {
 
 
-                char oper = operate.top();
-                operate.pop();
+        char oper = operate.top();
+        operate.pop();
 
-                if(operand.empty())
-                {
-                    cout<<"invalid input"<<endl;
-                    exit(3);
-                }
-                double a = operand.top();
-                operand.pop();
+        if(operand.empty())
+        {
+            cout<<"invalid input"<<endl;
+            exit(3);
+        }
+        double a = operand.top();
+        operand.pop();
 
-                if(operand.empty())
-                {
-                    cout<<"invalid input"<<endl;
-                    exit(3);
-                }
+        if(operand.empty())
+        {
+            cout<<"invalid input"<<endl;
+            exit(3);
+        }
 
-                double b = operand.top();
-                operand.pop();
+        double b = operand.top();
+        operand.pop();
 
-                operand.push(runOperate(b, a, oper));
+        operand.push(runOperate(b, a, oper));
 
 
     }
     double answer;
-    if(operand.empty()){
+    if(operand.empty())
+    {
 
         cout << "error" << endl;
         exit(4);
     }
-    else{
+    else
+    {
         answer = operand.top();
         operand.pop();
 
     }
 
-    /*if(!operand.empty()){
+    if(!operand.empty())
+    {
 
         cout <<"invalid input" << endl;
         exit(5);
     }
 
-    else{*/
+    else
+    {
 
         cout << argv[1] << " = " << answer << endl;
 
-    //}
+    }
 
     return 0;
 }
@@ -220,7 +237,7 @@ int precedence(char operate)
         x = 3;
         break;
     case '(':
-           x = 0;
+        x = 0;
         break;
     default :
         x = -1;
@@ -230,8 +247,9 @@ int precedence(char operate)
     return x;
 }
 
-bool isOperator(char character){
-switch(character)
+bool isOperator(char character)
+{
+    switch(character)
     {
     case '+':
     case '-':
