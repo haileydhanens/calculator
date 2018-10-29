@@ -14,30 +14,34 @@ double runOperate(double a, double b, char operate);
 int precedence(char operate);
 bool isOperator(char character);
 int calculator(char* argument);
-string formatString(char* str);
+string formatString(string str);
 
 int main(int argc, char** argv)
 {
 
-for(int i = 1; i < argc; i++){
-	cout<< calculator (argv[i])<< endl;
-}
+    for(int i = 1; i < argc; i++)
+    {
+        calculator(argv[i]);
+    }
 
 
 }
 
-int calculator(char* argument){
+int calculator(char* argument)
+{
 
     stack<char> operate;
     stack<double> operand;
-    stringstream stream(argument);
     int num;
+    string strings(argument);
     string str;
+
+   stringstream stream(formatString(strings));
 
     while(getline(stream, str, ' '))
     {
 
-	double value;
+        double value;
         try
         {
             value = std::stod(str, NULL); // if value cant be converted to decimal...
@@ -148,7 +152,6 @@ int calculator(char* argument){
     while(!operate.empty())
     {
 
-
         char oper = operate.top();
         operate.pop();
 
@@ -168,7 +171,6 @@ int calculator(char* argument){
 
         double b = operand.top();
         operand.pop();
-
         operand.push(runOperate(b, a, oper));
 
 
@@ -220,12 +222,15 @@ double runOperate(double a, double b, char operate)
         return a * b;
         break;
     case '/':
-	if(b != 0){
-        return a / b;}
-	else{
-		cout << "dividing by zero is undefined" << endl;
-		exit(12);
-	}
+        if(b != 0)
+        {
+            return a / b;
+        }
+        else
+        {
+            cout << "dividing by zero is undefined" << endl;
+            exit(12);
+        }
         break;
     case '^':
         return pow(a, b);
@@ -282,8 +287,68 @@ bool isOperator(char character)
     }
 }
 
-string formatString(char* str){
+string formatString(string str)
+{
     string newString = "";
 
+    for(int i = 0; i < str.length(); i++)
+    {
+
+        char c = str.at(i);
+
+        if(c == '+' || c == '/' || c == '*' || c == '^' || c == '(' || c == ')')
+        {
+
+            newString = newString + ' ' + c + ' ';
+
+        }
+        else if(str.at(i) == '-')
+        {
+
+            if(i == 0){
+
+
+                newString = newString + '-';
+            }
+            else if(i <  str.length()-1)
+            {
+                if(!isdigit(str.at(i-1)) && isdigit(str.at(i+1)))
+                {
+
+                    newString = newString + ' ' + '-';
+
+                }
+
+                else if(isdigit(str.at(i-1)) && (isdigit(str.at(i + 1)) || str.at(i+1)== '.')|| str.at(i+1)=='-' || str.at(i+1) == ' ')
+                {
+
+                    newString = newString + ' ' + '-' + ' ';
+
+                }
+
+            }
+            else if(str.at(i+1) == ' ' && str.at(i - 1) == ' ')
+            {
+
+                newString = newString + ' ' + '-' + ' ';
+
+            }
+
+
+
+
+        }
+
+        else
+        {
+
+            newString = newString + c;
+
+        }
+
+
+    }
+
+    return newString;
 
 }
