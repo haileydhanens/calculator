@@ -13,22 +13,34 @@ using namespace std;
 double runOperate(double a, double b, char operate);
 int precedence(char operate);
 bool isOperator(char character);
+int calculator(char* argument);
+string formatString(char* str);
 
 int main(int argc, char** argv)
 {
 
+for(int i = 1; i < argc; i++){
+	cout<< calculator (argv[i])<< endl;
+}
+
+
+}
+
+int calculator(char* argument){
+
     stack<char> operate;
     stack<double> operand;
-    stringstream stream(argv[1]);
+    stringstream stream(argument);
     int num;
     string str;
+
     while(getline(stream, str, ' '))
     {
 
-
+	double value;
         try
         {
-            double value = std::stod(str);
+            value = std::stod(str, NULL); // if value cant be converted to decimal...
             num = 1;
         }
         catch(std::exception& e)
@@ -38,7 +50,7 @@ int main(int argc, char** argv)
         if(num)
         {
             //if a number, push onto the operand stack
-            operand.push(stod(str, NULL));
+            operand.push(value);
         }
         else if(str[0] == '(')
         {
@@ -57,7 +69,7 @@ int main(int argc, char** argv)
                 if(operate.empty())
                 {
                     cout<<"invalid input"<<endl;
-                    exit(1);
+                    return(1);
                 }
 
                 char oper = operate.top();
@@ -66,7 +78,7 @@ int main(int argc, char** argv)
                 if(operand.empty())
                 {
                     cout<<"invalid input"<<endl;
-                    exit(1);
+                    return(1);
                 }
                 double a = operand.top();
                 operand.pop();
@@ -74,7 +86,7 @@ int main(int argc, char** argv)
                 if(operand.empty())
                 {
                     cout<<"invalid input"<<endl;
-                    exit(1);
+                    return(1);
                 }
 
                 double b = operand.top();
@@ -108,7 +120,7 @@ int main(int argc, char** argv)
                     if(operand.empty())
                     {
                         cout<<"invalid input"<<endl;
-                        exit(7);
+                        return(7);
                     }
 
                     double a = operand.top();
@@ -117,7 +129,7 @@ int main(int argc, char** argv)
                     if(operand.empty())
                     {
                         cout<<"invalid input"<<endl;
-                        exit(8);
+                        return(8);
                     }
 
                     double b = operand.top();
@@ -143,7 +155,7 @@ int main(int argc, char** argv)
         if(operand.empty())
         {
             cout<<"invalid input"<<endl;
-            exit(3);
+            return(3);
         }
         double a = operand.top();
         operand.pop();
@@ -151,7 +163,7 @@ int main(int argc, char** argv)
         if(operand.empty())
         {
             cout<<"invalid input"<<endl;
-            exit(3);
+            return(3);
         }
 
         double b = operand.top();
@@ -166,7 +178,7 @@ int main(int argc, char** argv)
     {
 
         cout << "error" << endl;
-        exit(4);
+        return(4);
     }
     else
     {
@@ -179,17 +191,18 @@ int main(int argc, char** argv)
     {
 
         cout <<"invalid input" << endl;
-        exit(5);
+        return(5);
     }
 
     else
     {
 
-        cout << argv[1] << " = " << answer << endl;
+        cout << argument << " = " << answer << endl;
 
     }
 
     return 0;
+
 }
 
 
@@ -207,7 +220,12 @@ double runOperate(double a, double b, char operate)
         return a * b;
         break;
     case '/':
-        return a / b;
+	if(b != 0){
+        return a / b;}
+	else{
+		cout << "dividing by zero is undefined" << endl;
+		exit(12);
+	}
         break;
     case '^':
         return pow(a, b);
@@ -262,4 +280,10 @@ bool isOperator(char character)
         return false;
         break;
     }
+}
+
+string formatString(char* str){
+    string newString = "";
+
+
 }
