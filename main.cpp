@@ -333,7 +333,7 @@ string formatString(string str)
 {
     string newString = "";
 
-    for(int i = 0; i < str.length(); i++)
+    for(int i = 0; i <(int) str.length(); i++)
     {
 
         char c = str.at(i);
@@ -355,7 +355,7 @@ string formatString(string str)
 
                 newString = newString + '-';
             }
-            else if(i <  str.length()-1)
+            else if(i < (int) str.length()-1)
             {
                 //if the character before it is not a digit, and the thing after it is a digit, it must be a minus
                 if(!isdigit(str.at(i-1)) && isdigit(str.at(i+1)))
@@ -365,7 +365,7 @@ string formatString(string str)
 
                 }
                 //if the char before it is a digit and the char after it is a digit or another hyphen or a space, it is a minus
-                else if(isdigit(str.at(i-1)) && (isdigit(str.at(i + 1)) || str.at(i+1)== '.')|| str.at(i+1)=='-' || str.at(i+1) == ' ')
+                else if(isdigit(str.at(i-1)) &&( (isdigit(str.at(i + 1)) || str.at(i+1)== '.')|| str.at(i+1)=='-' || str.at(i+1) == ' '))
                 {
 
                     newString = newString + ' ' + '-' + ' ';
